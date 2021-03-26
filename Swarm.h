@@ -8,11 +8,12 @@ public:
 
 private:
 	Particle* m_pParticles;
+	int lastTime;
 
 public:
 	Swarm();
 	virtual ~Swarm();
-	void update();
+	void update(int elapsed);
 	const Particle* const getParticles() { return m_pParticles; };
 };
 

@@ -19,33 +19,35 @@ int main(int argc, char* args[]) {
 		cout << "Error initializing SDL." << endl;
 	}
 
-	double rSpeed = 0.001;
-	double gSpeed = 0.002;
-	double bSpeed = 0.003;
+	double rSpeed = 0.0001;
+	double gSpeed = 0.0002;
+	double bSpeed = 0.0003;
 
 	Swarm swarm;
 
-	//const Particle* const pParticles = swarm.getParticles();
+	const Particle* const pParticles = swarm.getParticles();
 
 	while (true) {
 		
 		int elapsed = SDL_GetTicks();
-		screen.clear();
-		swarm.update();
+
+		swarm.update(elapsed);
 
 		unsigned char red = (1 + sin(elapsed * rSpeed)) * 128;
 		unsigned char green = (1 + sin(elapsed * gSpeed)) * 128;
 		unsigned char blue = (1 + sin(elapsed * bSpeed)) * 128;
 		
-		const Particle* const pParticles = swarm.getParticles();
+		//const Particle* const pParticles = swarm.getParticles();
 		
 		for (int i = 0; i < Swarm::NPARTICLES; i++) {
 			Particle particle = pParticles[i];
 
 			int x = (particle.m_x + 1) * Screen::SCREEN_WIDTH / 2;
-			int y = (particle.m_y + 1) * Screen::SCREEN_HEIGHT / 2;
+			int y = particle.m_y * Screen::SCREEN_WIDTH / 2 + Screen::SCREEN_HEIGHT / 2;
 			screen.setPixel(x, y, red, green, blue);
 		}
+
+		screen.boxBlur();
 
 		screen.update();
 
